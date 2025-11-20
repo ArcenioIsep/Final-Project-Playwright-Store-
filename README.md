@@ -1,102 +1,178 @@
-# 📦 Final Project — Playwright Store  
-### Brief Description
+# 🏪 Playwright Store Automation — Warm‑Up Project
 
-This project delivers an end-to-end automated test suite for the **Store Module** of the application:
+## 🎯 Short Description
+This repository contains an **end‑to‑end automation project using Playwright**, focused **only on the Store module** of the training application.  
+The goal is to practice real-world UI automation by covering the full store lifecycle:
 
-> https://playground-drab-six.vercel.app/store
+**Inventory → Catalog → Cart → Payments → Orders**
 
-The tests validate the complete purchase flow — **Inventory → Catalog → Cart → Payments → Orders** — ensuring that key functionalities behave as expected.  
-The project follows a clean, minimalistic, and professional structure using Playwright, with separation of concerns (POM, data files, modular test specs).
+This warm‑up prepares you for real industry automation practices through clean structure, reusable components, and organized test flows.
 
-tests/
-  store/
-    inventory.spec.ts
-    catalog.spec.ts
-    cart.spec.ts
-    payments.spec.ts
-    orders.spec.ts
-    e2e-store-flow.spec.ts
-  data/
-    products.data.ts
-  pages/
-    inventory.page.ts
-    catalog.page.ts
-    cart.page.ts
-    payments.page.ts
-    orders.page.ts
-
-playwright.config.ts
-README.md
-
+👉 Target application: https://playground-drab-six.vercel.app/store
 
 ---
 
-# ✅ Task Checklist (Project To-Do)
+# 🚀 Project Overview
 
-## 🔧 Setup
-- [ ] Create GitHub repo  
-- [ ] Install dependencies (`npm install`)  
-- [ ] Install Playwright browsers (`npx playwright install`)  
-- [ ] Configure `playwright.config.ts`  
-- [ ] Set `baseURL` for easy navigation  
-- [ ] Confirm test runner works (`npx playwright test`)  
+This project teaches you how to design and execute automated UI tests for the Store module using:
+
+- UI automation with Playwright  
+- Form handling & validations  
+- Stock management logic  
+- Cart totals & price calculations  
+- Payment flow validations  
+- Order confirmation verifications  
+- Page Object Model (POM) structure  
+- Test data separation  
+- Clean, readable test specs  
+
+The Store section represents a mini e‑commerce workflow, allowing you to train real QA automation skills.
 
 ---
 
-## 🧩 Module Test Development
+# 🧩 Tools & Technologies
+
+| Tool | Purpose |
+|------|---------|
+| **Playwright** | Main automation framework |
+| **Node.js** | Runtime to execute Playwright |
+| **VS Code** | IDE + Playwright Test Runner |
+| **Git / GitHub** | Version control + board management |
+| **ESLint / Prettier** *(optional)* | Code cleanliness & consistent formatting |
+
+---
+
+# 📁 Project Structure (Recommended)
+
+```
+store-automation/
+│
+├── tests/
+│   ├── store/
+│   │   ├── inventory.spec.ts
+│   │   ├── catalog.spec.ts
+│   │   ├── cart.spec.ts
+│   │   ├── payments.spec.ts
+│   │   ├── orders.spec.ts
+│   │   └── e2e-store-flow.spec.ts
+│   │
+│   ├── pages/
+│   │   ├── inventory.page.ts
+│   │   ├── catalog.page.ts
+│   │   ├── cart.page.ts
+│   │   ├── payments.page.ts
+│   │   └── orders.page.ts
+│   │
+│   └── data/
+│       └── products.data.ts
+│
+├── playwright.config.ts
+└── README.md
+```
+
+---
+
+# ⚙️ Playwright Configuration Overview
+
+Your configuration will include:
+
+- Base URL for the store module  
+- Parallel test execution  
+- HTML reports  
+- Traces on retry  
+- Screenshots on failure  
+
+Example (simplified):
+
+```js
+export default defineConfig({
+  testDir: './tests',
+  reporter: 'html',
+  fullyParallel: true,
+
+  use: {
+    baseURL: 'https://playground-drab-six.vercel.app',
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure'
+  }
+});
+```
+
+---
+
+# 🧠 Page Object Model (POM)
+
+Each store section has its own Page Object, allowing:
+
+- Cleaner selectors  
+- Reusable actions  
+- Better readability  
+- Clear separation between test logic and UI interactions  
+
+Example:
+
+```ts
+await catalog.addProductToCart("Laptop Test");
+await cart.verifyTotal(20);
+```
+
+---
+
+# 🧪 What Will Be Automated
 
 ### **1. Inventory**
-- [ ] Create InventoryPage (POM)
-- [ ] Test: create new product  
-- [ ] Test: increase quantity  
-- [ ] Test: decrease quantity  
-- [ ] Test: quantity never goes below zero  
+- Add new products  
+- Increase stock  
+- Decrease stock  
+- Validate quantity cannot go below 0  
 
 ### **2. Catalog**
-- [ ] Create CatalogPage (POM)
-- [ ] Test: products appear  
-- [ ] Test: add to cart  
-- [ ] Test: stock decreases  
-- [ ] Test: Out of Stock disabled  
+- Product visibility  
+- Add to cart  
+- Out‑of‑stock behavior  
 
 ### **3. Cart**
-- [ ] Create CartPage (POM)
-- [ ] Test: items appear  
-- [ ] Test: subtotal and total  
-- [ ] Test: go to Payments button  
+- List items  
+- Validate subtotal & total  
+- Navigate to Payments  
 
 ### **4. Payments**
-- [ ] Create PaymentsPage (POM)
-- [ ] Test: payment summary  
-- [ ] Test: select payment method  
-- [ ] Test: block payment without method  
-- [ ] Test: confirm payment leads to Orders  
+- Payment method selection  
+- Summary validation  
+- Confirm payment  
 
 ### **5. Orders**
-- [ ] Create OrdersPage (POM)
-- [ ] Test: order list  
-- [ ] Test: order details (date, total, items)  
+- Orders list  
+- Order details (items, total, date)  
+
+### **6. Full E2E Flow**
+- Create product  
+- Add to cart  
+- Checkout  
+- Confirm order  
+- Validate in orders page  
 
 ---
 
-## 🔁 E2E Flow
-- [ ] Create product  
-- [ ] Validate in catalog  
-- [ ] Add to cart  
-- [ ] Validate totals  
-- [ ] Proceed to payment  
-- [ ] Pay  
-- [ ] Validate order created  
+# ▶️ Running the Tests
+
+Run all tests:
+```
+npx playwright test
+```
+
+Run in UI mode:
+```
+npx playwright test --ui
+```
+
+Show the report:
+```
+npx playwright show-report
+```
 
 ---
 
-## 📝 Documentation
-- [ ] Finalize README.md  
-- [ ] Add instructions on running tests  
-- [ ] Add project structure description  
-- [ ] Add checklist of tasks  
-- [ ] Keep everything clean, simple, minimalistic  
-
----
-
+# 📜 License
+Open and free for personal learning and development.
 
