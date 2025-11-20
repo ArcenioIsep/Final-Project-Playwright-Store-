@@ -1,0 +1,22 @@
+{
+  "name": "final-project-playwright-store-",
+  "version": "1.0.0",
+  "description": "This repository contains an **end‑to‑end automation project using Playwright**, focused **only on the Store module** of the training application.  \r The goal is to practice real-world UI automation by covering the full store lifecycle:",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArcenioIsep/Final-Project-Playwright-Store-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArcenioIsep/Final-Project-Playwright-Store-/issues"
+  },
+  "homepage": "https://github.com/ArcenioIsep/Final-Project-Playwright-Store-#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.10.1"
+  }
+}
