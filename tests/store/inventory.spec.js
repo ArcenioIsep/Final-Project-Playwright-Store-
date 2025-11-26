@@ -2,6 +2,7 @@ import { test } from "@playwright/test";
 import { INVENTORY_DATA } from "../data/inventory.data.js";
 import { InventoryPage } from "../pages/InventoryPage.js";
 
+
 test.describe("STORE — INVENTORY", () => {
   let inventory;
 
