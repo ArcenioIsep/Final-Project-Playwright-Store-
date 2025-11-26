@@ -1,65 +1,48 @@
-import { expect } from "@playwright/test";
+import { test, expect } from "@playwright/test";
+import { CatalogPage } from "../pages/catalogPage";
+import { InventoryPage } from "../pages/inventoryPage";
 
-export class CatalogPage {
-  constructor(page) {
-    this.page = page;
-    this.catalogButton = page.getByTestId("store-tab-catalog");
-  }
+test.describe("STORE — CATALOG", () => {
 
-  /** Abrir catálogo */
-  async open() {
-    await this.page.goto("/store");
-    await this.catalogButton.click();
-    await expect(this.page.getByText("Product Catalog")).toBeVisible();
-  }
+  test("Lightsaber appears in Catalog", async ({ page }) => {
+    const catalog = new CatalogPage(page);
+    await catalog.open();
 
-  /** 🔥 FORÇAR SCROLL — ESSENCIAL PARA PRODUTOS COM STOCK 0 */
-  async scrollToBottom() {
-    await this.page.evaluate(() => {
-      window.scrollTo(0, document.body.scrollHeight);
-    });
-    await this.page.waitForTimeout(500);
-  }
+    await catalog.expectVisible("Lightsaber (Star Wars)");
+  });
 
-  /** Card */
-  productCard(name) {
-    return this.page.locator("li.flex").filter({ hasText: name }).first();
-  }
+  test("Add to Cart reduces units in Catalog", async ({ page }) => {
+    const catalog = new CatalogPage(page);
+    await catalog.open();
 
-  /** Botão Add to Cart */
-  addToCartButton(name) {
-    return this.productCard(name).getByRole("button", { name: "Add to Cart" });
-  }
+    const before = await catalog.getUnits("Giant Rubber Duck");
+    await catalog.addToCart("Giant Rubber Duck");
+    const after = await catalog.getUnits("Giant Rubber Duck");
 
-  /** Botão Out of Stock */
-  outOfStockButton(name) {
-    return this.productCard(name).getByRole("button", { name: "Out of Stock" });
-  }
+    expect(after).toBe(before - 1);
+  });
 
-  /** Extrair unidades */
-  async getUnits(name) {
-    await this.scrollToBottom(); // 👈 obrigatório
+  test("Out of stock item disables Add to Cart button", async ({ page }) => {
+    const catalog = new CatalogPage(page);
+    await catalog.open();
 
-    const card = this.productCard(name);
-    const spans = card.locator("span");
-    const count = await spans.count();
+    await catalog.expectVisible("Invisible Pen");
 
-    for (let i = 0; i < count; i++) {
-      const txt = await spans.nth(i).innerText();
-      if (txt.includes("units")) {
-        return Number(txt.split(" ")[0]);
-      }
-    }
+    await expect(
+      catalog.outOfStockButton("Invisible Pen")
+    ).toBeDisabled();
+  });
 
-    throw new Error(`Units not found for product: ${name}`);
-  }
+  test("Clicking Add to Cart has no effect when stock = 0", async ({ page }) => {
+    const catalog = new CatalogPage(page);
+    await catalog.open();
 
-  async addToCart(name) {
-    await this.addToCartButton(name).click();
-  }
+    const units = await catalog.getUnits("Invisible Pen");
+    expect(units).toBe(0);
 
-  async expectVisible(name) {
-    await this.scrollToBottom(); // 👈 obrigatório
-    await expect(this.productCard(name)).toBeVisible();
-  }
-}
+    // Add to Cart não deve existir
+    await expect(
+      catalog.outOfStockButton("Invisible Pen")
+    ).toBeDisabled();
+  });
+});
