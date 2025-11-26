@@ -51,4 +51,5 @@ test.describe("STORE — INVENTORY", () => {
     // Must stay 0
     await inventory.expectQuantity(product.name, 0);
   });
+  
 });
